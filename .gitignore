@@ -1,12 +1,25 @@
-# Scrapy Stuffs:
-backend/input.txt
-backend/result.txt
+# Python
+*.pyc
+__pycache__/
 
-# Environments
+# Django
+*.sqlite3
+db.sqlite3
+
+# Environment variables
 .env
 
-# Python Cache
-backend/django/FakeNewsDetection/__pycache__
+# Migrations
+*/migrations/*
 
-# Django Stuffs
-backend/django/db.sqlite3
+# Static and media files
+/static/
+/media/
+
+# Virtual environment
+venv/
+env/
+
+# IDE files
+.vscode/
+.idea/

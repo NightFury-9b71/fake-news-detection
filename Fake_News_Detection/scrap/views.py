@@ -5,9 +5,10 @@ from .forms import newsForm
 import requests
 from django.template import loader
 
-API_KEY = "AIzaSyDqkuQBslQHU0CzKDYCLR_Sb6ZLE8zoiUQ"
-SEARCH_ENGINE_ID = "1393ff14496044d63"
-URL = "https://www.googleapis.com/customsearch/v1"
+API_KEY=os.getenv('API_KEY')
+SEARCH_ENGINE_ID=os.getenv('SEARCH_ENGINE_ID')
+URL=os.getenv('URL')
+
 
 def getNews(params):
     news_items = []

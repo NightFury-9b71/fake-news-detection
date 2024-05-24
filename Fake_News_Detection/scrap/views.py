@@ -4,6 +4,7 @@ from .models import news
 from .forms import newsForm
 import requests
 from django.template import loader
+import os
 
 API_KEY=os.getenv('API_KEY')
 SEARCH_ENGINE_ID=os.getenv('SEARCH_ENGINE_ID')

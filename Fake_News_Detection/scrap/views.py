@@ -6,6 +6,7 @@ import requests
 from django.template import loader
 import os
 from dotenv import load_dotenv
+from datetime import datetime,timedelta
 
 load_dotenv()
 
@@ -54,12 +55,15 @@ def getScrap(request):
             }
 
             news_items = getNews(params)
+            current = datetime.now()
+
             for item in news_items:
                 news.objects.create(
                     site_name=item['site_name'],
                     title=item['title'],
                     snippet=item['snippet'],
-                    link=item['link']
+                    link=item['link'],
+                    search_timestamp = current
                 )
 
             return redirect('showNews')
@@ -76,8 +80,13 @@ def delete(request):
     return HttpResponse("Deleted Successfully")
 
 def showNews(request):
-    news_items = news.objects.all()
-    news_text = "\n".join([f"{item.title} - {item.site_name}\n{item.snippet}\n{item.link}\n" for item in news_items])
+    
+    # news_items = news.objects.all()
+    # news_text = "\n".join([f"{item.title} - {item.site_name}\n{item.snippet}\n{item.link}\n" for item in news_items])
+    
+    recent_time = datetime.now() - timedelta(minutes=1)
+    recent_news_items = news.objects.filter(search_timestamp__gte=recent_time).order_by('-search_timestamp')
+    news_text = "\n".join([f"{item.title} - {item.site_name}\n{item.snippet}\n{item.link}\n" for item in recent_news_items])
     template = loader.get_template('checker.html')
     context = {'news_text': news_text}
     return HttpResponse(template.render(context, request))

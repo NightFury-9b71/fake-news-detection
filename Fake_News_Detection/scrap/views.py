@@ -66,6 +66,9 @@ def getScrap(request):
     context = {'form': form}
     return HttpResponse(template.render(context, request))
 
+def delete(request):
+    news.objects.all().delete()
+    return HttpResponse("Deleted Successfully")
 
 def showNews(request):
     news_items = news.objects.all()

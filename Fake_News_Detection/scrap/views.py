@@ -5,22 +5,20 @@ from .forms import newsForm
 import requests
 from django.template import loader
 
-# Create your views here.
-
-API_KEY = "AIzaSyBUSVTIaVVuyU8TYl289PVZxM1lcRpstZo"
+API_KEY = "AIzaSyDqkuQBslQHU0CzKDYCLR_Sb6ZLE8zoiUQ"
 SEARCH_ENGINE_ID = "1393ff14496044d63"
+URL = "https://www.googleapis.com/customsearch/v1"
 
-
-def getNews(query: str,params: dict) -> list:
+def getNews(params):
     news_items = []
     for page in range(1, 11):
-        res = requests.get(query, params=params)
+        res = requests.get(URL,params=params)
         if res.status_code == 200:
             res = res.json()
-            items = res.get('items', [])
+            items = res['items']
 
             for item in items:
-                site_name = item['pagemap']['metatags'][0].get('og:site_name', 'N/A')
+                site_name = item['pagemap']['metatags'][0]['og:site_name']
                 title = item['title']
                 snippet = item['snippet']
                 link = item['link']
@@ -31,15 +29,13 @@ def getNews(query: str,params: dict) -> list:
                     'link': link
                 })
 
-            params['start'] += 10  # Increment by 10 for the next page
+            params['start'] += 1
         else:
             break
     return news_items
 
-
-
 def getScrap(request):
-    if requests.models == 'POST':
+    if request.method == 'POST':  # Correcting the condition for POST method
         form = newsForm(request.POST)
         if form.is_valid():
             query = form.cleaned_data['query']
@@ -52,7 +48,7 @@ def getScrap(request):
                 'start': 1
             }
 
-            news_items = getNews(query,params)
+            news_items = getNews(params)
             for item in news_items:
                 news.objects.create(
                     site_name=item['site_name'],
@@ -60,14 +56,20 @@ def getScrap(request):
                     snippet=item['snippet'],
                     link=item['link']
                 )
-            return redirect('news_success')
+
+            return redirect('showNews')
     else:
         form = newsForm()
-        
-    
-    template = loader.get_template('checker.html')
-    context = { 'form': form}
-    return HttpResponse(template.render(context,request))
 
-def news_success(request):
-    return HttpResponse("News items have been successfully fetched and stored in the database.")
+
+    template = loader.get_template('checker.html')
+    context = {'form': form}
+    return HttpResponse(template.render(context, request))
+
+
+def showNews(request):
+    news_items = news.objects.all()
+    news_text = "\n".join([f"{item.title} - {item.site_name}\n{item.snippet}\n{item.link}\n" for item in news_items])
+    template = loader.get_template('checker.html')
+    context = {'news_text': news_text}
+    return HttpResponse(template.render(context, request))

@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -7,13 +8,6 @@
     <title>ফেক নিউজ এর কাঁথায় আগুন</title>
     <link rel="stylesheet" href="{% static 'css/checker.css' %}">
     <script src="{% static '/js/checker.js' %}"></script>
-    <script>
-        function transferValue() {
-            const textarea = document.getElementById('newsCheck');
-            const hiddenInput = document.getElementById('id_query');
-            hiddenInput.value = textarea.value;
-        }
-    </script>
 </head>
 <body>
 
@@ -32,16 +26,17 @@
         </div>
 
         <div class="area two">
-            <form action="" method="post" onsubmit="transferValue()">
+            <form action="" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <textarea class="box news" id="newsCheck"></textarea>
+                <textarea class="box news" name="query"></textarea> <!-- Use name attribute instead of id -->
                 <button class="btn check" type="submit">Check</button>
             </form>
         </div>
 
         <div class="area three">
-            <textarea class="box view" id="" readonly></textarea>
+            <!-- Render news text in viewTextarea -->
+            <textarea class="box view" id="viewTextarea" readonly>{{ news_text }}</textarea>
             <button class="btn print" type="submit">Print</button>
         </div>
 

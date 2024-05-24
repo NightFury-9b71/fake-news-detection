@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ফেক নিউজ এর কাঁথায় আগুন</title>
+    <link rel="stylesheet" href="{% static 'css/checker.css' %}">
+    <script src="{% static '/js/checker.js' %}"></script>
+    <script>
+        function transferValue() {
+            const textarea = document.getElementById('newsCheck');
+            const hiddenInput = document.getElementById('id_query');
+            hiddenInput.value = textarea.value;
+        }
+    </script>
+</head>
+<body>
+
+<div class="body">
+
+    <div class="icon his" onclick="show('history')"></div>
+    <div class="list" id="history"></div>
+
+    <div id="main">
+
+        <div class="area one">
+            <select>
+                <option value="English">English</option>
+                <option value="Bangla">Bangla</option>
+            </select>
+        </div>
+
+        <div class="area two">
+            <form action="" method="post" onsubmit="transferValue()">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <textarea class="box news" id="newsCheck"></textarea>
+                <button class="btn check" type="submit">Check</button>
+            </form>
+        </div>
+
+        <div class="area three">
+            <textarea class="box view" id="" readonly></textarea>
+            <button class="btn print" type="submit">Print</button>
+        </div>
+
+    </div>
+
+    <div class="icon pro" onclick="show('profile')"></div>
+    <div class="list" id="profile"></div>
+
+</div>
+
+</body>
+</html>

@@ -8,3 +8,6 @@ class news(models.Model):
     snippet = models.CharField(max_length=1000)
     link = models.CharField(max_length=1000)
 
+    def __str__(self) -> str:
+        return self.title
+

@@ -28,6 +28,7 @@ body{
 
 
 
+
 /* ------------------Sliders---------------------- */
 
 .list{
@@ -40,6 +41,10 @@ body{
     z-index: 1;
     transition: width .8s ease-in-out;
     
+}
+
+.list-new{
+    width: 30vw;
 }
 
 #profile{

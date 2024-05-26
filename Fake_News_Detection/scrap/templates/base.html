@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ফেক নিউজ এর কাঁথায় আগুন</title>
+    <title> {%block title%} ফেক নিউজ এর কাঁথায় আগুন {%endblock%}</title>
     <link rel="stylesheet" href="{% static 'css/checker.css' %}">
     <script src="{% static '/js/checker.js' %}"></script>
 </head>
@@ -36,7 +36,7 @@
 
         <div class="area three">
             <!-- Render news text in viewTextarea -->
-            <textarea class="box view" id="viewTextarea" readonly>{{ news_text }}</textarea>
+            <textarea class="box view" id="viewTextarea" readonly>{% block text %} {% endblock %}</textarea>
             <button class="btn print" type="submit">Print</button>
         </div>
 

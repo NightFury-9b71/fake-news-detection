@@ -71,7 +71,7 @@ def getScrap(request):
         form = newsForm()
 
 
-    template = loader.get_template('checker.html')
+    template = loader.get_template('base.html')
     context = {'form': form}
     return HttpResponse(template.render(context, request))
 
@@ -84,9 +84,9 @@ def showNews(request):
     # news_items = news.objects.all()
     # news_text = "\n".join([f"{item.title} - {item.site_name}\n{item.snippet}\n{item.link}\n" for item in news_items])
     
-    recent_time = datetime.now() - timedelta(minutes=1)
+    recent_time = datetime.now() - timedelta(minutes=100)
     recent_news_items = news.objects.filter(search_timestamp__gte=recent_time).order_by('-search_timestamp')
     news_text = "\n".join([f"{item.title} - {item.site_name}\n{item.snippet}\n{item.link}\n" for item in recent_news_items])
-    template = loader.get_template('checker.html')
+    template = loader.get_template('show.html')
     context = {'news_text': news_text}
     return HttpResponse(template.render(context, request))
